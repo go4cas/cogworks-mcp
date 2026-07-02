@@ -1,0 +1,7 @@
+# Revisions to ignore in `git blame` (bulk mechanical reformats).
+# Enable locally with:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+# GitHub honours this file automatically.
+
+# style: adopt biome — format + safe autofixes
+c9b92908f7de1554a3c66bf5b343765d4c85ed52
