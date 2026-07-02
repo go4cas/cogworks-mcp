@@ -1,7 +1,7 @@
 {
   "name": "@vaultbase/mcp",
   "version": "0.1.0",
-  "description": "Stdio↔HTTP bridge for the Vaultbase MCP server — connect Claude Desktop / Cursor / any MCP client to a remote Vaultbase deployment.",
+  "description": "Stdio\u2194HTTP bridge for the Vaultbase MCP server \u2014 connect Claude Desktop / Cursor / any MCP client to a remote Vaultbase deployment.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -29,6 +29,8 @@
     "build": "tsup",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
+    "lint": "biome check src tests",
+    "format": "biome format --write src tests",
     "prepublishOnly": "bun run typecheck && bun run test && bun run build"
   },
   "keywords": [
@@ -43,6 +45,7 @@
     "node": ">=18"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.2",
     "@types/bun": "^1.3.0",
     "@types/node": "^22.0.0",
     "bun-types": "^1.3.13",
