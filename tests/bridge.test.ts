@@ -54,7 +54,9 @@ describe("createBridge", () => {
       fetch: stubFetch(() => new Response(null, { status: 204 })),
       logger: QUIET_LOGGER,
     });
-    expect(await bridge.forward({ jsonrpc: "2.0", method: "notifications/initialized" })).toBeNull();
+    expect(
+      await bridge.forward({ jsonrpc: "2.0", method: "notifications/initialized" }),
+    ).toBeNull();
   });
 
   it("throws on non-2xx", async () => {
@@ -101,7 +103,10 @@ describe("createBridge", () => {
     });
 
     const seen: unknown[] = [];
-    bridge.openEvents((m) => seen.push(m), () => {});
+    bridge.openEvents(
+      (m) => seen.push(m),
+      () => {},
+    );
     expect(captured).not.toBeNull();
     captured!.onmessage?.({ data: '{"jsonrpc":"2.0","method":"notifications/tools/listChanged"}' });
     expect(seen).toEqual([{ jsonrpc: "2.0", method: "notifications/tools/listChanged" }]);

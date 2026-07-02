@@ -88,10 +88,7 @@ async function main(): Promise<void> {
   }
 
   const url = args.url ?? process.env.VAULTBASE_URL;
-  const token =
-    args.token ??
-    process.env.VAULTBASE_MCP_TOKEN ??
-    process.env.VAULTBASE_API_TOKEN;
+  const token = args.token ?? process.env.VAULTBASE_MCP_TOKEN ?? process.env.VAULTBASE_API_TOKEN;
 
   if (!url) {
     process.stderr.write("vaultbase-mcp: missing --url (or VAULTBASE_URL env).\n");

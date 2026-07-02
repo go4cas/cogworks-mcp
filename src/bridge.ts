@@ -206,7 +206,7 @@ export function runBridge(opts: BridgeOptions): BridgeHandle {
 }
 
 function writeLine(msg: unknown): void {
-  process.stdout.write(JSON.stringify(msg) + "\n");
+  process.stdout.write(`${JSON.stringify(msg)}\n`);
 }
 
 async function* readLines(stream: NodeJS.ReadableStream): AsyncGenerator<string> {
@@ -276,10 +276,18 @@ function defaultEventSourceFactory(log: Logger): NonNullable<BridgeOptions["even
     void start();
 
     const handle: EventSourceLike = {
-      get onmessage() { return onmessage; },
-      set onmessage(v) { onmessage = v; },
-      get onerror() { return onerror; },
-      set onerror(v) { onerror = v; },
+      get onmessage() {
+        return onmessage;
+      },
+      set onmessage(v) {
+        onmessage = v;
+      },
+      get onerror() {
+        return onerror;
+      },
+      set onerror(v) {
+        onerror = v;
+      },
       close() {
         closed = true;
         ctrl.abort();
