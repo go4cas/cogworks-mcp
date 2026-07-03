@@ -1,16 +1,16 @@
-# @vaultbase/mcp
+# @cogworks/mcp
 
-Stdio↔HTTP bridge for the [Vaultbase](https://vaultbase.dev) MCP server.
+Stdio↔HTTP bridge for the [Cogworks](https://cogworks.dev) MCP server.
 
-Vaultbase ships a first-party [Model Context Protocol](https://modelcontextprotocol.io)
-server. When you run vaultbase locally you can wire it up over stdio with
-`vaultbase mcp`. When the deployment lives on a remote host (or you don't
+Cogworks ships a first-party [Model Context Protocol](https://modelcontextprotocol.io)
+server. When you run cogworks locally you can wire it up over stdio with
+`cogworks mcp`. When the deployment lives on a remote host (or you don't
 want to install the binary on every developer machine), this package
 bridges the local MCP client (Claude Desktop, Cursor, Continue, Cline,
-Zed, …) to Vaultbase's HTTP+SSE transport at `/api/v1/mcp/`.
+Zed, …) to Cogworks's HTTP+SSE transport at `/api/v1/mcp/`.
 
 ```
-client (stdio) ⇄ @vaultbase/mcp ⇄ vaultbase (HTTPS + SSE)
+client (stdio) ⇄ @cogworks/mcp ⇄ cogworks (HTTPS + SSE)
 ```
 
 Pure TypeScript, ships as a single npm bin, requires Node ≥ 18. No Bun
@@ -19,9 +19,9 @@ runtime needed on the client.
 ## Install
 
 ```sh
-npm install -g @vaultbase/mcp
+npm install -g @cogworks/mcp
 # or use directly via npx
-npx @vaultbase/mcp --url https://api.example.com --token vbat_…
+npx @cogworks/mcp --url https://api.example.com --token cwat_…
 ```
 
 ## Claude Desktop config
@@ -32,12 +32,12 @@ or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
 ```json
 {
   "mcpServers": {
-    "vaultbase": {
+    "cogworks": {
       "command": "npx",
-      "args": ["-y", "@vaultbase/mcp"],
+      "args": ["-y", "@cogworks/mcp"],
       "env": {
-        "VAULTBASE_URL": "https://api.example.com",
-        "VAULTBASE_MCP_TOKEN": "vbat_eyJhbGciOiJIUzI1NiIs…"
+        "COGWORKS_URL": "https://api.example.com",
+        "COGWORKS_MCP_TOKEN": "cwat_eyJhbGciOiJIUzI1NiIs…"
       }
     }
   }
@@ -47,23 +47,23 @@ or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
 Mint a token via the admin UI (`/_/api-tokens`) or the CLI on the host:
 
 ```sh
-vaultbase token mint --name "Claude Desktop" --scope mcp:read --ttl 1y
+cogworks token mint --name "Claude Desktop" --scope mcp:read --ttl 1y
 ```
 
 ## Cursor / Continue / Cline / Zed
 
 Same pattern — each editor has an MCP-server config block. Use
-`command: "npx"`, `args: ["-y", "@vaultbase/mcp"]`, supply
-`VAULTBASE_URL` + `VAULTBASE_MCP_TOKEN` env vars.
+`command: "npx"`, `args: ["-y", "@cogworks/mcp"]`, supply
+`COGWORKS_URL` + `COGWORKS_MCP_TOKEN` env vars.
 
 ## Programmatic usage
 
 ```ts
-import { runBridge } from "@vaultbase/mcp";
+import { runBridge } from "@cogworks/mcp";
 
 const handle = runBridge({
   url: "https://api.example.com",
-  token: process.env.VAULTBASE_MCP_TOKEN!,
+  token: process.env.COGWORKS_MCP_TOKEN!,
 });
 await handle.done;
 ```
@@ -71,18 +71,18 @@ await handle.done;
 The bridge does not parse or rewrite MCP messages — it only frames them
 for whichever transport is on the other side. All MCP semantics
 (tools, resources, prompts, scope enforcement, audit logging) stay in
-the Vaultbase server.
+the Cogworks server.
 
 ## Compatibility
 
-| `@vaultbase/mcp` | Vaultbase server |
+| `@cogworks/mcp` | Cogworks server |
 |---|---|
 | `0.1.x` | `>= 0.10.0` |
 
-The Phase-3 HTTP+SSE transport ships in Vaultbase **0.10**. Earlier
+The Phase-3 HTTP+SSE transport ships in Cogworks **0.10**. Earlier
 servers only speak stdio — point Claude Desktop directly at the
-`vaultbase` binary instead.
+`cogworks` binary instead.
 
 ## License
 
-MIT — © 2026 Vaultbase contributors
+MIT — © 2026 Cogworks contributors

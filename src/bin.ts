@@ -1,20 +1,20 @@
 /**
- * vaultbase-mcp — CLI entry point.
+ * cogworks-mcp — CLI entry point.
  *
  * Usage:
- *   vaultbase-mcp --url https://api.example.com --token vbat_…
+ *   cogworks-mcp --url https://api.example.com --token cwat_…
  *
- * Defaults: VAULTBASE_URL / VAULTBASE_MCP_TOKEN / VAULTBASE_API_TOKEN env.
+ * Defaults: COGWORKS_URL / COGWORKS_MCP_TOKEN / COGWORKS_API_TOKEN env.
  *
  * Designed for Claude Desktop / Cursor / Continue MCP-server config:
  *
  *   "mcpServers": {
- *     "vaultbase": {
+ *     "cogworks": {
  *       "command": "npx",
- *       "args": ["-y", "@vaultbase/mcp"],
+ *       "args": ["-y", "@cogworks/mcp"],
  *       "env": {
- *         "VAULTBASE_URL": "https://api.example.com",
- *         "VAULTBASE_MCP_TOKEN": "vbat_…"
+ *         "COGWORKS_URL": "https://api.example.com",
+ *         "COGWORKS_MCP_TOKEN": "cwat_…"
  *       }
  *     }
  *   }
@@ -60,17 +60,17 @@ function parseArgs(argv: readonly string[]): Args {
   return out;
 }
 
-const HELP = `vaultbase-mcp v${VERSION}
-Bridge MCP-over-stdio (Claude Desktop / Cursor / …) to a remote Vaultbase
+const HELP = `cogworks-mcp v${VERSION}
+Bridge MCP-over-stdio (Claude Desktop / Cursor / …) to a remote Cogworks
 HTTP+SSE MCP endpoint.
 
 Usage:
-  vaultbase-mcp [--url <base>] [--token <vbat_...>]
+  cogworks-mcp [--url <base>] [--token <cwat_...>]
 
 Options:
-  -u, --url <base>     Vaultbase base URL (or env VAULTBASE_URL)
+  -u, --url <base>     Cogworks base URL (or env COGWORKS_URL)
   -t, --token <token>  API token with mcp:* scope
-                       (or env VAULTBASE_MCP_TOKEN / VAULTBASE_API_TOKEN)
+                       (or env COGWORKS_MCP_TOKEN / COGWORKS_API_TOKEN)
   -v, --version        Print version
   -h, --help           Show this help
 `;
@@ -83,20 +83,26 @@ async function main(): Promise<void> {
     return;
   }
   if (args.version) {
-    process.stdout.write(`vaultbase-mcp ${VERSION}\n`);
+    process.stdout.write(`cogworks-mcp ${VERSION}\n`);
     return;
   }
 
-  const url = args.url ?? process.env.VAULTBASE_URL;
-  const token = args.token ?? process.env.VAULTBASE_MCP_TOKEN ?? process.env.VAULTBASE_API_TOKEN;
+  // COGWORKS_* preferred; legacy VAULTBASE_* still honored for existing configs.
+  const url = args.url ?? process.env.COGWORKS_URL ?? process.env.VAULTBASE_URL;
+  const token =
+    args.token ??
+    process.env.COGWORKS_MCP_TOKEN ??
+    process.env.COGWORKS_API_TOKEN ??
+    process.env.VAULTBASE_MCP_TOKEN ??
+    process.env.VAULTBASE_API_TOKEN;
 
   if (!url) {
-    process.stderr.write("vaultbase-mcp: missing --url (or VAULTBASE_URL env).\n");
+    process.stderr.write("cogworks-mcp: missing --url (or COGWORKS_URL env).\n");
     process.exit(2);
   }
   if (!token) {
     process.stderr.write(
-      "vaultbase-mcp: missing --token (or VAULTBASE_MCP_TOKEN / VAULTBASE_API_TOKEN env).\n",
+      "cogworks-mcp: missing --token (or COGWORKS_MCP_TOKEN / COGWORKS_API_TOKEN env).\n",
     );
     process.exit(2);
   }
@@ -107,6 +113,6 @@ async function main(): Promise<void> {
 
 main().catch((e: unknown) => {
   const msg = e instanceof Error ? e.message : String(e);
-  process.stderr.write(`vaultbase-mcp: ${msg}\n`);
+  process.stderr.write(`cogworks-mcp: ${msg}\n`);
   process.exit(1);
 });

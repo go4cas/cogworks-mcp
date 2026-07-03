@@ -1,7 +1,7 @@
 {
-  "name": "@vaultbase/mcp",
+  "name": "@cogworks/mcp",
   "version": "0.1.0",
-  "description": "Stdio\u2194HTTP bridge for the Vaultbase MCP server \u2014 connect Claude Desktop / Cursor / any MCP client to a remote Vaultbase deployment.",
+  "description": "Stdio\u2194HTTP bridge for the Cogworks MCP server \u2014 connect Claude Desktop / Cursor / any MCP client to a remote Cogworks deployment.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -17,14 +17,14 @@
     }
   },
   "bin": {
-    "vaultbase-mcp": "./dist/bin.js"
+    "cogworks-mcp": "./dist/bin.js"
   },
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
-  "vaultbaseServerCompat": ">=0.10 <2.0",
+  "cogworksServerCompat": ">=0.10 <2.0",
   "scripts": {
     "build": "tsup",
     "test": "bun test",
@@ -34,7 +34,7 @@
     "prepublishOnly": "bun run typecheck && bun run test && bun run build"
   },
   "keywords": [
-    "vaultbase",
+    "cogworks",
     "mcp",
     "model-context-protocol",
     "claude",

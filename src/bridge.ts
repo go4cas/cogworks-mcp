@@ -1,11 +1,11 @@
 /**
  * Bidirectional bridge between MCP-over-stdio (what local clients expect)
- * and MCP-over-HTTP+SSE (what Vaultbase exposes remotely).
+ * and MCP-over-HTTP+SSE (what Cogworks exposes remotely).
  *
  * Wire model:
  *
  *   ┌───────────────┐  stdin    ┌───────────────┐   POST /api/v1/mcp
- *   │ MCP client    │──────────▶│ vaultbase-mcp │──────────────────────▶
+ *   │ MCP client    │──────────▶│ cogworks-mcp │──────────────────────▶
  *   │ (Claude, …)   │           │   (this pkg)  │
  *   │               │  stdout   │               │   GET  /api/v1/mcp/events
  *   │               │◀──────────│               │◀────────────────────── (SSE)
@@ -20,13 +20,13 @@
  *
  * The bridge does not parse, modify, or route messages — it only frames
  * them for whichever transport is on the other side. All MCP semantics
- * stay in the Vaultbase server.
+ * stay in the Cogworks server.
  */
 
 export interface BridgeOptions {
-  /** Vaultbase base URL — e.g. `https://api.example.com` (no trailing slash). */
+  /** Cogworks base URL — e.g. `https://api.example.com` (no trailing slash). */
   url: string;
-  /** API token (`vbat_…`) with at least one `mcp:*` scope. */
+  /** API token (`cwat_…`) with at least one `mcp:*` scope. */
   token: string;
   /** Optional fetch override (tests inject). Defaults to global fetch. */
   fetch?: typeof globalThis.fetch;
@@ -62,9 +62,9 @@ export interface EventSourceLike {
 }
 
 const stderrLogger: Logger = {
-  info: (s) => process.stderr.write(`[vaultbase-mcp] ${s}\n`),
-  warn: (s) => process.stderr.write(`[vaultbase-mcp] WARN ${s}\n`),
-  error: (s) => process.stderr.write(`[vaultbase-mcp] ERROR ${s}\n`),
+  info: (s) => process.stderr.write(`[cogworks-mcp] ${s}\n`),
+  warn: (s) => process.stderr.write(`[cogworks-mcp] WARN ${s}\n`),
+  error: (s) => process.stderr.write(`[cogworks-mcp] ERROR ${s}\n`),
 };
 
 /**
